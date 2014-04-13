@@ -60,9 +60,9 @@
    		   if (observersClone[i].once) {
    		      observers.splice(i, 1);
    		   }
-   			if (returnedValue === false) {
-   				return false;
-   			}
+   		   if (returnedValue === false) {
+   		       return false;
+   		   }
    		}
    	}
 	
