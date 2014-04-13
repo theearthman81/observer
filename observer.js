@@ -13,11 +13,11 @@
     * @param {Boolean} [eventsShouldBubble] should events bubble up to parent.
     */
    function Observer(eventsShouldBubble) {
-    if (!(this instanceof Observer)) {
+      if (!(this instanceof Observer)) {
         return new Observer(eventsShouldBubble);
-    }
-   	this._eventsShouldBubble = !!eventsShouldBubble;
-   	this._topics = Object.create(null);
+      }
+      this._eventsShouldBubble = !!eventsShouldBubble;
+      this._topics = Object.create(null);
    }
 
    /**
@@ -36,9 +36,9 @@
     * @return {String[]}
     */
    Observer.getBubbleEvents = function(eventName) {
-   	return eventName.split(':').map(function(splitName, index, eventArr) {
-   		return eventArr.slice(0, index + 1).join(':');
-   	});
+      return eventName.split(':').map(function(splitName, index, eventArr) {
+         return eventArr.slice(0, index + 1).join(':');
+      });
    };
 
    /**
@@ -48,25 +48,25 @@
     * @return {Boolean} - false if a handler has returned false, this will prevent the vent 'bubbling'.
     */
    Observer.prototype._publish = function(eventName, bubble) {
-   	var observers = this._topics[eventName],
-   		args = Array.prototype.slice.call(arguments, 1),
-   		returnedValue,
-   		observersClone;
-		
-   	if (observers) {
-   	   observersClone = observers.slice();
-   		for (var i = 0, l = observersClone.length; i < l; i++) {
-   		   returnedValue = observersClone[i].handler.apply(observersClone[i].scope || this, args);
-   		   if (observersClone[i].once) {
-   		      observers.splice(i, 1);
-   		   }
-   			if (returnedValue === false) {
-   				return false;
-   			}
-   		}
-   	}
-	
-   	return this._eventsShouldBubble;
+      var observers = this._topics[eventName],
+         args = Array.prototype.slice.call(arguments, 1),
+         returnedValue,
+         observersClone;
+      
+      if (observers) {
+         observersClone = observers.slice();
+         for (var i = 0, l = observersClone.length; i < l; i++) {
+            returnedValue = observersClone[i].handler.apply(observersClone[i].scope || this, args);
+            if (observersClone[i].once) {
+               observers.splice(i, 1);
+            }
+            if (returnedValue === false) {
+               return false;
+            }
+         }
+      }
+   
+      return this._eventsShouldBubble;
    };
 
    /**
@@ -77,21 +77,21 @@
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
-   	if (typeof eventName !== 'string') {
-   		return this;
-   	}
-	
-   	if (!this._topics[eventName]) {
-   		this._topics[eventName] = [];
-   	}
-	
-   	this._topics[eventName].push({
-   		handler: handler,
-   		scope: scope,
-   		once: !!once
-   	});
-	
-   	return this;
+      if (typeof eventName !== 'string') {
+         return this;
+      }
+   
+      if (!this._topics[eventName]) {
+         this._topics[eventName] = [];
+      }
+   
+      this._topics[eventName].push({
+         handler: handler,
+         scope: scope,
+         once: !!once
+      });
+   
+      return this;
    };
 
    /**
@@ -100,23 +100,23 @@
     * @param {Object} [scope] optional scope to unsubscribe from.
     * @return {*} 'this' for chaining.
     */
-   Observer.prototype.unsubscribe = function(eventName, scope) {	
-   	[].concat(eventName || Object.keys(this._topics)).forEach(function(matchedEvent) {
-   		var topic = this._topics[matchedEvent];
-   		if (topic) {
-   			this._topics[matchedEvent] = topic.filter(function(observer) {
-   			    if (scope && observer.scope !== scope) {
-   					return observer;
-   				}
-   			});
-			
-   			if (!this._topics[matchedEvent].length) {
-   				delete this._topics[matchedEvent];
-   			}
-   		}
-   	}, this);
-	
-   	return this;
+   Observer.prototype.unsubscribe = function(eventName, scope) {   
+      [].concat(eventName || Object.keys(this._topics)).forEach(function(matchedEvent) {
+         var topic = this._topics[matchedEvent];
+         if (topic) {
+            this._topics[matchedEvent] = topic.filter(function(observer) {
+                if (scope && observer.scope !== scope) {
+                  return observer;
+               }
+            });
+         
+            if (!this._topics[matchedEvent].length) {
+               delete this._topics[matchedEvent];
+            }
+         }
+      }, this);
+   
+      return this;
    };
 
    /**
@@ -126,24 +126,24 @@
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.publish = function(eventName) {
-   	if (typeof eventName !== 'string') {
-   		return this;
-   	}
-	
-   	var eventsToPublish = Observer.getBubbleEvents(eventName),
-   		args = Array.prototype.slice.call(arguments, 1),
-   		eventArgs;
-		
-   	while (eventsToPublish.length) {
-   		eventArgs = args.slice();
-   		eventArgs.unshift(eventsToPublish[eventsToPublish.length - 1]);
-   		if (this._publish.apply(this, eventArgs) === false) {
-   			break;
-   		}
-   		eventsToPublish.pop();
-   	}
-	
-   	return this;
+      if (typeof eventName !== 'string') {
+         return this;
+      }
+   
+      var eventsToPublish = Observer.getBubbleEvents(eventName),
+         args = Array.prototype.slice.call(arguments, 1),
+         eventArgs;
+      
+      while (eventsToPublish.length) {
+         eventArgs = args.slice();
+         eventArgs.unshift(eventsToPublish[eventsToPublish.length - 1]);
+         if (this._publish.apply(this, eventArgs) === false) {
+            break;
+         }
+         eventsToPublish.pop();
+      }
+   
+      return this;
    };
    
    return Observer;
