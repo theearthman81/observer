@@ -13,9 +13,9 @@
     * @param {Boolean} [eventsShouldBubble] should events bubble up to parent.
     */
    function Observer(eventsShouldBubble) {
-      if (!(this instanceof Observer)) {
-   		return new Observer(eventsShouldBubble);
-   	}
+    if (!(this instanceof Observer)) {
+        return new Observer(eventsShouldBubble);
+    }
    	this._eventsShouldBubble = !!eventsShouldBubble;
    	this._topics = Object.create(null);
    }
@@ -60,9 +60,9 @@
    		   if (observersClone[i].once) {
    		      observers.splice(i, 1);
    		   }
-   		   if (returnedValue === false) {
-   		       return false;
-   		   }
+   			if (returnedValue === false) {
+   				return false;
+   			}
    		}
    	}
 	
@@ -105,7 +105,7 @@
    		var topic = this._topics[matchedEvent];
    		if (topic) {
    			this._topics[matchedEvent] = topic.filter(function(observer) {
-   				if (scope && observer.scope !== scope) {
+   			    if (scope && observer.scope !== scope) {
    					return observer;
    				}
    			});
