@@ -71,13 +71,15 @@
 
    /**
     * Public method to subscribe to a given eventName.
-    * @param {String} eventName - event to subscribe to, can be joined via ':'.
+    * @param {String|Object} eventName - event to subscribe to, can be joined via ':'.
     * @param {Function} handler - function to invoke when event is published.
     * @param {Boolean} once - whether handler should only be triggered once and then unsubscribe.
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
-      if (typeof eventName !== 'string') {
+      if (eventName && typeof eventName.toString === 'function') {
+         eventName = eventName.toString();
+      } else {
          return this;
       }
    
@@ -96,11 +98,13 @@
 
    /**
     * Public method to unsubscribe to a given eventName or scope or everything.
-    * @param {String} [eventName] - optional eventName to unsubscribe from.
+    * @param {String|Object} [eventName] - optional eventName to unsubscribe from.
     * @param {Object} [scope] optional scope to unsubscribe from.
     * @return {*} 'this' for chaining.
     */
-   Observer.prototype.unsubscribe = function(eventName, scope) {   
+   Observer.prototype.unsubscribe = function(eventName, scope) {  
+      eventName = (eventName && typeof eventName.toString === 'function') ? 
+                        eventName.toString() : eventName; 
       [].concat(eventName || Object.keys(this._topics)).forEach(function(matchedEvent) {
          var topic = this._topics[matchedEvent];
          if (topic) {
@@ -122,11 +126,13 @@
    /**
     * Public method to publish to a given eventName. Any arguments supplied will be proxied to the handler.
     * the eventName can be joined via ':' and all events will be called unless a handler returns false then bubbling will be prevented.
-    * @param {String} eventName - eventName to publish.
+    * @param {String|Object} eventName - eventName to publish.
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.publish = function(eventName) {
-      if (typeof eventName !== 'string') {
+      if (eventName && typeof eventName.toString === 'function') {
+         eventName = eventName.toString();
+      } else {
          return this;
       }
    
