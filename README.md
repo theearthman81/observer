@@ -1,4 +1,5 @@
 TODO
+```javascript
 function log(eventName) {
 	return function() {
 		console.log(eventName, 'fired ', ' arguments', arguments, ' scope', this);
@@ -18,3 +19,4 @@ o.subscribe('ee:ff:gg', log('ee:ff:gg'), 'ggg');
 o.publish('ee', 'myArg');
 o.publish('ee:ff', 'myArg', 'myArg2');
 o.publish('ee:ff:gg', 'myArg3');
+```
