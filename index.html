@@ -33,10 +33,26 @@
 
 <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">log</span><span class="p">(</span><span class="nx">eventName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">eventName</span><span class="p">,</span> <span class="s1">'fired '</span><span class="p">,</span> <span class="s1">' arguments'</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">,</span> <span class="s1">' scope'</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">),</span> <span class="s1">'ggg'</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="s1">'ggg'</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="s1">'ggg'</span><span class="p">);</span>
+
+<span class="nx">o</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">,</span> <span class="s1">'myArg'</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">,</span> <span class="s1">'myArg'</span><span class="p">,</span> <span class="s1">'myArg2'</span><span class="p">);</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="s1">'myArg3'</span><span class="p">);</span>
+</pre></div>
 
 <h3>
 <a name="background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background</h3>
