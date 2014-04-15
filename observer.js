@@ -1,5 +1,5 @@
 (function (root, cls) {
-   if (typeof define && define.amd) {
+   if (typeof define === 'function' && define.amd) {
       define(cls);
    } else {
       root.Observer = cls();
