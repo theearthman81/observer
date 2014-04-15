@@ -1,5 +1,5 @@
-(function (root, cls, define) {
-   if (define) {
+(function (root, cls) {
+   if (typeof define && define.amd) {
       define(cls);
    } else {
       root.Observer = cls();
@@ -153,5 +153,4 @@
    };
    
    return Observer;
-   
-}, window.define && define.amd));
+});
