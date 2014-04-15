@@ -82,6 +82,10 @@
       } else {
          return this;
       }
+
+      if (!this._topics) {
+         this._topics = Object.create(null);
+      }
    
       if (!this._topics[eventName]) {
          this._topics[eventName] = [];
