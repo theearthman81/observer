@@ -157,4 +157,4 @@
    };
    
    return Observer;
-});
+}));
