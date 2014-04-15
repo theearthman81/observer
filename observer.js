@@ -1,12 +1,12 @@
-(function (root, cls) {
-   if (typeof define === 'function' && define.amd) {
+(function (root, cls, define) {
+   if (define) {
       define(cls);
    } else {
       root.Observer = cls();
    }
-}(this, function() {
+}(this, function() {   
    /**
-    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubsribe' methods.
+    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubsribe' methods. 
     *
     * @constructor
     * @name Observer
@@ -14,7 +14,7 @@
     */
    function Observer(eventsShouldBubble) {
       if (!(this instanceof Observer)) {
-         return new Observer(eventsShouldBubble);
+        return new Observer(eventsShouldBubble);
       }
       this._eventsShouldBubble = !!eventsShouldBubble;
       this._topics = Object.create(null);
@@ -42,7 +42,7 @@
    };
 
    /**
-    * Private method to publish an event.
+    * Private method to publish an event. 
     * @param {String} eventName - event to publish.
     * @param {Boolean} [bubble] - whether event should bubble or not. True by default.
     * @return {Boolean} - false if a handler has returned false, this will prevent the vent 'bubbling'.
@@ -52,7 +52,7 @@
          args = Array.prototype.slice.call(arguments, 1),
          returnedValue,
          observersClone;
-
+      
       if (observers) {
          observersClone = observers.slice();
          for (var i = 0, l = observersClone.length; i < l; i++) {
@@ -65,7 +65,7 @@
             }
          }
       }
-
+   
       return this._eventsShouldBubble;
    };
 
@@ -82,21 +82,17 @@
       } else {
          return this;
       }
-
-      if (!this._topics) {
-         this._topics = Object.create(null);
-      }
-
+   
       if (!this._topics[eventName]) {
          this._topics[eventName] = [];
       }
-
+   
       this._topics[eventName].push({
          handler: handler,
          scope: scope,
          once: !!once
       });
-
+   
       return this;
    };
 
@@ -106,24 +102,24 @@
     * @param {Object} [scope] optional scope to unsubscribe from.
     * @return {*} 'this' for chaining.
     */
-   Observer.prototype.unsubscribe = function(eventName, scope) {
-      eventName = (eventName && typeof eventName.toString === 'function') ?
-         eventName.toString() : eventName;
+   Observer.prototype.unsubscribe = function(eventName, scope) {  
+      eventName = (eventName && typeof eventName.toString === 'function') ? 
+                        eventName.toString() : eventName; 
       [].concat(eventName || Object.keys(this._topics)).forEach(function(matchedEvent) {
          var topic = this._topics[matchedEvent];
          if (topic) {
             this._topics[matchedEvent] = topic.filter(function(observer) {
-               if (scope && observer.scope !== scope) {
+                if (scope && observer.scope !== scope) {
                   return observer;
                }
             });
-
+         
             if (!this._topics[matchedEvent].length) {
                delete this._topics[matchedEvent];
             }
          }
       }, this);
-
+   
       return this;
    };
 
@@ -139,11 +135,11 @@
       } else {
          return this;
       }
-
+   
       var eventsToPublish = Observer.getBubbleEvents(eventName),
          args = Array.prototype.slice.call(arguments, 1),
          eventArgs;
-
+      
       while (eventsToPublish.length) {
          eventArgs = args.slice();
          eventArgs.unshift(eventsToPublish[eventsToPublish.length - 1]);
@@ -152,9 +148,10 @@
          }
          eventsToPublish.pop();
       }
-
+   
       return this;
    };
-
+   
    return Observer;
-}));
+   
+}, window.define && define.amd));
