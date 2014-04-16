@@ -28,7 +28,7 @@
    /**
     * @type {Boolean}
     */
-   Observer.prototype._shouldBubble = false;
+   Observer.prototype._eventsShouldBubble = false;
 
    /**
     * Static method to get all possible events that can bubble from a given eventName.
@@ -81,6 +81,10 @@
          eventName = eventName.toString();
       } else {
          return this;
+      }
+
+      if (!this._topics) {
+         this._topics = Object.create(null);
       }
    
       if (!this._topics[eventName]) {
@@ -153,4 +157,4 @@
    };
    
    return Observer;
-});
+}));
