@@ -10,13 +10,11 @@
     *
     * @constructor
     * @name Observer
-    * @param {Boolean} [eventsShouldBubble] should events bubble up to parent.
     */
-   function Observer(eventsShouldBubble) {
+   function Observer() {
       if (!(this instanceof Observer)) {
-        return new Observer(eventsShouldBubble);
+        return new Observer();
       }
-      this._eventsShouldBubble = !!eventsShouldBubble;
    }
 
    /**
@@ -38,6 +36,15 @@
       return eventName.split(':').map(function(splitName, index, eventArr) {
          return eventArr.slice(0, index + 1).join(':');
       });
+   };
+   
+   /**
+    * Whether events should events bubble up to parent.
+    * @return {*} 'this' for chaining
+    */
+   Observer.prototype.withEventBubbling = function() {
+      this._eventsShouldBubble = true;
+      return this;
    };
 
    /**
