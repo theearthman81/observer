@@ -6,7 +6,7 @@
    }
 }(this, function() {   
    /**
-    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubsribe' methods. 
+    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
     *
     * @constructor
     * @name Observer
@@ -17,7 +17,6 @@
         return new Observer(eventsShouldBubble);
       }
       this._eventsShouldBubble = !!eventsShouldBubble;
-      this._topics = Object.create(null);
    }
 
    /**
