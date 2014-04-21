@@ -46,7 +46,18 @@
       this._eventsShouldBubble = true;
       return this;
    };
-
+   
+   /**
+    * Lazy getter for topics.
+    * @return {Object}
+    */
+   Observer.prototype._getTopics = function() {
+      if (!this._topics) {
+         this._topics = Object.create(null);
+      }
+      return this._topics;
+   };
+   
    /**
     * Private method to publish an event. 
     * @param {String} eventName - event to publish.
@@ -54,7 +65,7 @@
     * @return {Boolean} - false if a handler has returned false, this will prevent the vent 'bubbling'.
     */
    Observer.prototype._publish = function(eventName, bubble) {
-      var observers = this._topics[eventName],
+      var observers = this._getTopics()[eventName],
          args = Array.prototype.slice.call(arguments, 1),
          returnedValue,
          observersClone;
@@ -85,19 +96,17 @@
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
       if (eventName && typeof eventName.toString === 'function') {
          eventName = eventName.toString();
-      } else {
-         return this;
       }
-
-      if (!this._topics) {
-         this._topics = Object.create(null);
+      if (typeof handler !== 'function') {
+         throw new Error('Observer.subscribe: please provide a function as he handler argument.');
+      }
+      var topics = this._getTopics();
+   
+      if (!topics[eventName]) {
+         topics[eventName] = [];
       }
    
-      if (!this._topics[eventName]) {
-         this._topics[eventName] = [];
-      }
-   
-      this._topics[eventName].push({
+      topics[eventName].push({
          handler: handler,
          scope: scope,
          once: !!once
@@ -115,17 +124,18 @@
    Observer.prototype.unsubscribe = function(eventName, scope) {  
       eventName = (eventName && typeof eventName.toString === 'function') ? 
                         eventName.toString() : eventName; 
-      [].concat(eventName || Object.keys(this._topics)).forEach(function(matchedEvent) {
-         var topic = this._topics[matchedEvent];
+      var topics = this._getTopics();
+      [].concat(eventName || Object.keys(topics)).forEach(function(matchedEvent) {
+         var topic = topics[matchedEvent];
          if (topic) {
-            this._topics[matchedEvent] = topic.filter(function(observer) {
+            topics[matchedEvent] = topic.filter(function(observer) {
                 if (scope && observer.scope !== scope) {
                   return observer;
                }
             });
          
-            if (!this._topics[matchedEvent].length) {
-               delete this._topics[matchedEvent];
+            if (!topics[matchedEvent].length) {
+               delete topics[matchedEvent];
             }
          }
       }, this);
