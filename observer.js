@@ -48,6 +48,9 @@
     * @return {Boolean} - false if a handler has returned false, this will prevent the vent 'bubbling'.
     */
    Observer.prototype._publish = function(eventName, bubble) {
+      if (!this._topics) {
+         this._topics = Object.create(null);
+      }
       var observers = this._topics[eventName],
          args = Array.prototype.slice.call(arguments, 1),
          returnedValue,
