@@ -1,7 +1,7 @@
 {
   "name": "Observer",
   "version": "0.0.0",
-  "description": "Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. ",
+  "description": "Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods.",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
