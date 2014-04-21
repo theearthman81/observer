@@ -1,0 +1,22 @@
+{
+  "name": "Observer",
+  "version": "0.0.0",
+  "description": "Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods.",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jimenglish81/observer.git"
+  },
+  "author": "Jim",
+  "bugs": {
+    "url": "https://github.com/jimenglish81/observer/issues"
+  },
+  "homepage": "https://github.com/jimenglish81/observer",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-contrib-uglify": "^0.4.0"
+  }
+}
