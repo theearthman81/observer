@@ -6,15 +6,18 @@
    }
 }(this, function() {   
    /**
-    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
+    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubsribe' methods. 
     *
     * @constructor
     * @name Observer
+    * @param {Boolean} [eventsShouldBubble] should events bubble up to parent.
     */
-   function Observer() {
+   function Observer(eventsShouldBubble) {
       if (!(this instanceof Observer)) {
-        return new Observer();
+        return new Observer(eventsShouldBubble);
       }
+      this._eventsShouldBubble = !!eventsShouldBubble;
+      this._topics = Object.create(null);
    }
 
    /**
@@ -37,27 +40,7 @@
          return eventArr.slice(0, index + 1).join(':');
       });
    };
-   
-   /**
-    * Whether events should events bubble up to parent.
-    * @return {*} 'this' for chaining
-    */
-   Observer.prototype.withEventBubbling = function() {
-      this._eventsShouldBubble = true;
-      return this;
-   };
-   
-   /**
-    * Lazy getter for topics.
-    * @return {Object}
-    */
-   Observer.prototype._getTopics = function() {
-      if (!this._topics) {
-         this._topics = Object.create(null);
-      }
-      return this._topics;
-   };
-   
+
    /**
     * Private method to publish an event. 
     * @param {String} eventName - event to publish.
@@ -65,7 +48,10 @@
     * @return {Boolean} - false if a handler has returned false, this will prevent the vent 'bubbling'.
     */
    Observer.prototype._publish = function(eventName, bubble) {
-      var observers = this._getTopics()[eventName],
+      if (!this._topics) {
+         this._topics = Object.create(null);
+      }
+      var observers = this._topics[eventName],
          args = Array.prototype.slice.call(arguments, 1),
          returnedValue,
          observersClone;
@@ -96,17 +82,19 @@
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
       if (eventName && typeof eventName.toString === 'function') {
          eventName = eventName.toString();
+      } else {
+         return this;
       }
-      if (typeof handler !== 'function') {
-         throw new Error('Observer.subscribe: please provide a function as he handler argument.');
-      }
-      var topics = this._getTopics();
-   
-      if (!topics[eventName]) {
-         topics[eventName] = [];
+
+      if (!this._topics) {
+         this._topics = Object.create(null);
       }
    
-      topics[eventName].push({
+      if (!this._topics[eventName]) {
+         this._topics[eventName] = [];
+      }
+   
+      this._topics[eventName].push({
          handler: handler,
          scope: scope,
          once: !!once
@@ -124,18 +112,17 @@
    Observer.prototype.unsubscribe = function(eventName, scope) {  
       eventName = (eventName && typeof eventName.toString === 'function') ? 
                         eventName.toString() : eventName; 
-      var topics = this._getTopics();
-      [].concat(eventName || Object.keys(topics)).forEach(function(matchedEvent) {
-         var topic = topics[matchedEvent];
+      [].concat(eventName || Object.keys(this._topics)).forEach(function(matchedEvent) {
+         var topic = this._topics[matchedEvent];
          if (topic) {
-            topics[matchedEvent] = topic.filter(function(observer) {
+            this._topics[matchedEvent] = topic.filter(function(observer) {
                 if (scope && observer.scope !== scope) {
                   return observer;
                }
             });
          
-            if (!topics[matchedEvent].length) {
-               delete topics[matchedEvent];
+            if (!this._topics[matchedEvent].length) {
+               delete this._topics[matchedEvent];
             }
          }
       }, this);
