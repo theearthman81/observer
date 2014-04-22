@@ -8,8 +8,8 @@
    /**
     * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
     *
+    * @class Observer
     * @constructor
-    * @name Observer
     */
    function Observer() {
       if (!(this instanceof Observer)) {
@@ -40,6 +40,8 @@
    
    /**
     * Whether events should events bubble up to parent.
+    *
+    * @method withEventBubbling
     * @return {*} 'this' for chaining
     */
    Observer.prototype.withEventBubbling = function() {
@@ -88,10 +90,12 @@
 
    /**
     * Public method to subscribe to a given eventName.
+    *
+    * @method subscribe
     * @param {String|Object} eventName - event to subscribe to, can be joined via ':'.
     * @param {Function} handler - function to invoke when event is published.
     * @param {Boolean} once - whether handler should only be triggered once and then unsubscribe.
-    * @return {*} 'this' for chaining.
+    * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
        eventName = (eventName && typeof eventName.toString === 'function') ? 
@@ -117,9 +121,11 @@
 
    /**
     * Public method to unsubscribe to a given eventName or scope or everything.
+    *
+    * @method unsubscribe  
     * @param {String|Object} [eventName] - optional eventName to unsubscribe from.
     * @param {Object} [scope] - optional scope to unsubscribe from.
-    * @return {*} 'this' for chaining.
+    * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.unsubscribe = function(eventName, scope) {  
       eventName = (eventName && typeof eventName.toString === 'function') ? 
@@ -146,8 +152,10 @@
    /**
     * Public method to publish to a given eventName. Any arguments supplied will be proxied to the handler.
     * the eventName can be joined via ':' and all events will be called unless a handler returns false then bubbling will be prevented.
+    *
+    * @method publish
     * @param {String|Object} eventName - eventName to publish.
-    * @return {*} 'this' for chaining.
+    * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.publish = function(eventName) {
       eventName = (eventName && typeof eventName.toString === 'function') ? 
@@ -171,6 +179,8 @@
    
    /**
     * Utility to check whether a given event has any listeners; if none is supplied then all topics are checked.
+    *
+    * @method hasListeners
     * @param {String|Object} [eventName] - optional eventName to check.
     * @return {Boolean}
     */

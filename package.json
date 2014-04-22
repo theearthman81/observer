@@ -1,5 +1,5 @@
 {
-  "name": "Observer",
+  "name": "observer",
   "version": "0.0.0",
   "description": "Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods.",
   "main": "Gruntfile.js",
@@ -14,9 +14,10 @@
   "bugs": {
     "url": "https://github.com/jimenglish81/observer/issues"
   },
-  "homepage": "https://github.com/jimenglish81/observer",
+  "homepage": "http://jimenglish81.github.io/observer",
   "devDependencies": {
     "grunt": "^0.4.4",
-    "grunt-contrib-uglify": "^0.4.0"
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-yuidoc": "^0.5.2"
   }
 }

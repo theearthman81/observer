@@ -10,11 +10,25 @@ module.exports = function(grunt) {
         src: 'src/<%= pkg.name %>.js',
         dest: 'target/<%= pkg.name %>.min.js'
       }
+    },
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: '<%= pkg.homepage %>',
+        options: {
+          paths: ['src/'],
+          //themedir: 'path/to/custom/theme/',
+          outdir: 'target/docs/'
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
-
-  grunt.registerTask('default', ['uglify']);
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  
+  grunt.registerTask('default', ['uglify', 'yuidoc']);
 
 };
