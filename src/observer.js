@@ -94,9 +94,9 @@
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
-      if (eventName && typeof eventName.toString === 'function') {
-         eventName = eventName.toString();
-      }
+       eventName = (eventName && typeof eventName.toString === 'function') ? 
+                        eventName.toString() : eventName; 
+                        
       if (typeof handler !== 'function') {
          throw new Error('Observer.subscribe: please provide a function as he handler argument.');
       }
@@ -118,7 +118,7 @@
    /**
     * Public method to unsubscribe to a given eventName or scope or everything.
     * @param {String|Object} [eventName] - optional eventName to unsubscribe from.
-    * @param {Object} [scope] optional scope to unsubscribe from.
+    * @param {Object} [scope] - optional scope to unsubscribe from.
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.unsubscribe = function(eventName, scope) {  
@@ -134,7 +134,7 @@
                }
             });
          
-            if (!topics[matchedEvent].length) {
+            if (!this.hasListeners(matchedEvent)) {
                delete topics[matchedEvent];
             }
          }
@@ -150,11 +150,8 @@
     * @return {*} 'this' for chaining.
     */
    Observer.prototype.publish = function(eventName) {
-      if (eventName && typeof eventName.toString === 'function') {
-         eventName = eventName.toString();
-      } else {
-         return this;
-      }
+      eventName = (eventName && typeof eventName.toString === 'function') ? 
+                        eventName.toString() : eventName; 
    
       var eventsToPublish = Observer.getBubbleEvents(eventName),
          args = Array.prototype.slice.call(arguments, 1),
@@ -170,6 +167,21 @@
       }
    
       return this;
+   };
+   
+   /**
+    * Utility to check whether a given event has any listeners; if none is supplied then all topics are checked.
+    * @param {String|Object} [eventName] - optional eventName to check.
+    * @return {Boolean}
+    */
+   Observer.prototype.hasListeners = function(eventName) {
+      var topics = this._getTopics();
+      if (eventName) {
+         eventName = typeof eventName.toString === 'function' ? eventName.toString() : eventName;
+		   return !!(topics[eventName] && topics[eventName].length);
+      } else {
+         return !!Object.keys(topics).length;
+      }
    };
    
    return Observer;
