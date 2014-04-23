@@ -23,12 +23,18 @@ module.exports = function(grunt) {
           outdir: 'dist/docs/'
         }
       }
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-karma');
   
-  grunt.registerTask('default', ['uglify', 'yuidoc']);
+  grunt.registerTask('default', ['uglify', 'yuidoc', 'karma']);
 
 };

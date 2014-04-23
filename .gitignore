@@ -8,4 +8,4 @@
 #############
 .idea/
 node_modules/
-target/
+dist/
