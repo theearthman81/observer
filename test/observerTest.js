@@ -76,7 +76,7 @@ describe('ObserverTest', function(){
        expect(observer.hasListeners()).toBeFalsy();
    });
    
-   it('be used as a mixin', function(){
+   it('can be used as a mixin', function(){
        var spy = jasmine.createSpy();
        var myObserver = Observer.mixin({
           foo: 'bar'
