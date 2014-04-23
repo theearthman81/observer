@@ -6,6 +6,8 @@
    }
 }(this, function() {   
 	
+	"use strict";
+	
    /**
     * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
     *
