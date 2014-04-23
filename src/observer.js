@@ -6,7 +6,7 @@
    }
 }(this, function() {   
 	
-	"use strict";
+   "use strict";
 	
    /**
     * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
@@ -206,7 +206,7 @@
     */
    Observer.mixin = function(base) {
       if (!base) {
-	      throw new Error('Observer.mixin: please provide a base object to extend.');
+         throw new Error('Observer.mixin: please provide a base object to extend.');
       }
       var props = Observer.prototype;
       for (var prop in props) {
