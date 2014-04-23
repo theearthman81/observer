@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: 'src/<%= pkg.name %>.js',
-        dest: 'target/<%= pkg.name %>.min.js'
+        dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
     yuidoc: {
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         options: {
           paths: ['src/'],
           //themedir: 'path/to/custom/theme/',
-          outdir: 'target/docs/'
+          outdir: 'dist/docs/'
         }
       }
     }
