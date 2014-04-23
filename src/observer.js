@@ -189,7 +189,7 @@
       var topics = this._getTopics();
       if (eventName) {
          eventName = typeof eventName.toString === 'function' ? eventName.toString() : eventName;
-		   return !!(topics[eventName] && topics[eventName].length);
+         return !!(topics[eventName] && topics[eventName].length);
       } else {
          return !!Object.keys(topics).length;
       }
