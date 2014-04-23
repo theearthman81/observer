@@ -5,6 +5,7 @@
       root.Observer = cls();
    }
 }(this, function() {   
+	
    /**
     * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
     *
@@ -26,17 +27,6 @@
     * @type {Boolean}
     */
    Observer.prototype._eventsShouldBubble = false;
-
-   /**
-    * Static method to get all possible events that can bubble from a given eventName.
-    * @param {String} eventName - eventName to split on ':' and return all possible events to bubble.
-    * @return {String[]}
-    */
-   Observer.getBubbleEvents = function(eventName) {
-      return eventName.split(':').map(function(splitName, index, eventArr) {
-         return eventArr.slice(0, index + 1).join(':');
-      });
-   };
    
    /**
     * Whether events should events bubble up to parent.
@@ -47,6 +37,17 @@
    Observer.prototype.withEventBubbling = function() {
       this._eventsShouldBubble = true;
       return this;
+   };
+   
+   /**
+    * Get all possible events that can bubble from a given eventName.
+    * @param {String} eventName - eventName to split on ':' and return all possible events to bubble.
+    * @return {String[]}
+    */
+   Observer.prototype._getBubbleEvents = function(eventName) {
+      return eventName.split(':').map(function(splitName, index, eventArr) {
+         return eventArr.slice(0, index + 1).join(':');
+      });
    };
    
    /**
@@ -161,7 +162,7 @@
       eventName = (eventName && typeof eventName.toString === 'function') ? 
                         eventName.toString() : eventName; 
    
-      var eventsToPublish = Observer.getBubbleEvents(eventName),
+      var eventsToPublish = this._getBubbleEvents(eventName),
          args = Array.prototype.slice.call(arguments, 1),
          eventArgs;
       
@@ -192,6 +193,26 @@
       } else {
          return !!Object.keys(topics).length;
       }
+   };
+   
+   /**
+    * Static method for using Observer as a mixin.
+    *
+    * @method mixin
+    * @param {Object} base - base object to add mixin functionality to.
+    * @return {Object}
+    */
+   Observer.mixin = function(base) {
+      if (!base) {
+	throw new Error('Observer.mixin: please provide a base object to extend.');
+      }
+      var props = Observer.prototype;
+      for (var prop in props) {
+         if (props.hasOwnProperty(prop)) {
+            base[prop] = props[prop];
+          }
+      }	  
+      return base;
    };
    
    return Observer;
