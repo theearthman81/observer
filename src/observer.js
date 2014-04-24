@@ -97,7 +97,8 @@
     * @method subscribe
     * @param {String|Object} eventName - event to subscribe to, can be joined via ':'.
     * @param {Function} handler - function to invoke when event is published.
-    * @param {Boolean} once - whether handler should only be triggered once and then unsubscribe.
+    * @param {Object} [scope] - scope for the handler to be run in. This is useful if you wish to unsubscribe by scope.
+    * @param {Boolean} [once] - whether handler should only be triggered once and then unsubscribe.
     * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
