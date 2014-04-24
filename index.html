@@ -70,6 +70,20 @@
 <strong>scope</strong> - <em>optional</em> the scope you wish the supplied handler to run in. </li>
 <li>
 <strong>once</strong> - <em>optional</em> if you wish the handler to only be triggered once and then immediately unsubscribed. </li>
+</ul><div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">observerInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'event published!'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="publishing-an-event" class="anchor" href="#publishing-an-event"><span class="octicon octicon-link"></span></a>Publishing an event</h3>
+
+<p>Publish via the <strong>publish</strong> method which takes one mandatory and any number of other arguments which will be proxied on to the handler.</p>
+
+<ul>
+<li>
+<strong>eventName</strong> - <em>required</em> name of the event you wish to publish.</li>
 </ul><h2>
 <a name="maintenance" class="anchor" href="#maintenance"><span class="octicon octicon-link"></span></a>Maintenance</h2>
 
