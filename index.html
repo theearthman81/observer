@@ -28,41 +28,50 @@
 
     <div class="container">
       <section id="main_content">
-        <h3>
-<a name="observerjs---a-lightweight-pubsub" class="anchor" href="#observerjs---a-lightweight-pubsub"><span class="octicon octicon-link"></span></a>Observer.js - a lightweight pub/sub.</h3>
+        <h2>
+<a name="observerjs---a-lightweight-pubsub" class="anchor" href="#observerjs---a-lightweight-pubsub"><span class="octicon octicon-link"></span></a>Observer.js - a lightweight pub/sub.</h2>
 
 <p>Observer is a lightweight pub/sub library that can be used as a single event bus or as a base class for easy communications between objects.</p>
 
-<p>To install run 'npm install' then 'grunt'.</p>
+<p><a href="https://github.com/jimenglish81/observer">https://github.com/jimenglish81/observer</a></p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">log</span><span class="p">(</span><span class="nx">eventName</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">eventName</span><span class="p">,</span> <span class="s1">'fired '</span><span class="p">,</span> <span class="s1">' arguments'</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">,</span> <span class="s1">' scope'</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">};</span>
-<span class="p">}</span>
+<p>To install run <strong>npm install</strong> then <strong>grunt</strong>.</p>
 
-<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">),</span> <span class="s1">'ggg'</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="nb">window</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="s1">'ggg'</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="nx">log</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">),</span> <span class="s1">'ggg'</span><span class="p">);</span>
+<h2>
+<a name="background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background</h2>
 
-<span class="nx">o</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'ee'</span><span class="p">,</span> <span class="s1">'myArg'</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'ee:ff'</span><span class="p">,</span> <span class="s1">'myArg'</span><span class="p">,</span> <span class="s1">'myArg2'</span><span class="p">);</span>
-<span class="nx">o</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'ee:ff:gg'</span><span class="p">,</span> <span class="s1">'myArg3'</span><span class="p">);</span>
+<p>I authored Observer in order to have a lightweight pub/sub library to use while developing decoupled apps. This functionality is available through multiple libraries and frameworks, but I wanted to be able to have a library agnostic one. </p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>To use Observer either create a new instance</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">observerInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
+</pre></div>
+
+<p>or use Observer's mixin functionality to decorate an object</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="kd">var</span> <span class="nx">observerMixin</span> <span class="o">=</span> <span class="nx">Observer</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">myObject</span><span class="p">);</span>
 </pre></div>
 
 <h3>
-<a name="background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background</h3>
+<a name="subscribing-to-an-event" class="anchor" href="#subscribing-to-an-event"><span class="octicon octicon-link"></span></a>Subscribing to an event</h3>
 
-<p>I authored observer in order to have a lightweight pub/sub library to use while developing decoupled apps. This functionality is available through multiple libraries and frameworks, but I wanted to be able to have a library agnostic one. </p>
+<p>Subscribe via the <strong>subscribe</strong> method which takes two mandatory arguments and two optional ones.</p>
 
-<h3>
-<a name="maintenance" class="anchor" href="#maintenance"><span class="octicon octicon-link"></span></a>Maintenance</h3>
+<ul>
+<li>
+<strong>eventName</strong> - <em>required</em> name of the event you wish to subscribe to.</li>
+<li>
+<strong>handler</strong> - <em>required</em> handler you wish to run when the event is published. </li>
+<li>
+<strong>scope</strong> - <em>optional</em> the scope you wish the supplied handler to run in. </li>
+<li>
+<strong>once</strong> - <em>optional</em> if you wish the handler to only be triggered once and then immediately unsubscribed. </li>
+</ul><h2>
+<a name="maintenance" class="anchor" href="#maintenance"><span class="octicon octicon-link"></span></a>Maintenance</h2>
 
 <p>Any issues please contact Jim English (<a href="https://github.com/jimenglish81" class="user-mention">@jimenglish81</a>) or submit a pull request.</p>
       </section>
