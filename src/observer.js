@@ -1,6 +1,6 @@
 (function (root, cls) {
    if(typeof module !== 'undefined' && module.exports) {
-      module.exports = subscribableFactory();
+      module.exports = cls();
    } else if (typeof define === 'function' && define.amd) {
       define(cls);
    } else {
