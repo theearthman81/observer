@@ -26,6 +26,17 @@ describe('ObserverTest', function(){
        expect(secondSpy).toHaveBeenCalled();
    });
    
+   it('can be subscribed by many handlers but will stop triggering them if false is returned', function(){
+       var spy = jasmine.createSpy().andReturn(false);
+       var secondSpy = jasmine.createSpy();
+       
+       observer.subscribe('foo', spy);
+       observer.subscribe('foo', secondSpy);
+       observer.publish('foo');
+       expect(spy).toHaveBeenCalled();
+       expect(secondSpy.callCount).toBe(0);
+   });
+   
    it('can be subscribed to with eventName that is derived from Object.toString', function(){
        var spy = jasmine.createSpy();
        var myEvent = {
