@@ -1,5 +1,7 @@
 (function (root, cls) {
-   if (typeof define === 'function' && define.amd) {
+   if(typeof module !== 'undefined' && module.exports) {
+      module.exports = subscribableFactory();
+   } else if (typeof define === 'function' && define.amd) {
       define(cls);
    } else {
       root.Observer = cls();
