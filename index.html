@@ -56,6 +56,8 @@
 <span class="kd">var</span> <span class="nx">observerMixin</span> <span class="o">=</span> <span class="nx">Observer</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">myObject</span><span class="p">);</span>
 </pre></div>
 
+<p>When possible all methods return the instance to allow chaining for ease of use.</p>
+
 <h3>
 <a name="subscribing-to-an-event" class="anchor" href="#subscribing-to-an-event"><span class="octicon octicon-link"></span></a>Subscribing to an event</h3>
 
@@ -106,6 +108,39 @@
 <span class="nx">observerInstance</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">,</span> <span class="nb">window</span><span class="p">);</span> <span class="nx">unsubscribe</span> <span class="nx">to</span> <span class="nx">myEvent</span> <span class="k">for</span> <span class="nx">handlers</span> <span class="k">in</span> <span class="nx">the</span> <span class="nb">window</span> <span class="nx">scope</span><span class="p">.</span>
 <span class="nx">observerInstance</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nb">window</span><span class="p">);</span> <span class="nx">unsubscribe</span> <span class="nx">to</span> <span class="nx">all</span> <span class="nx">events</span> <span class="k">for</span> <span class="nx">handlers</span> <span class="k">in</span> <span class="nx">the</span> <span class="nb">window</span> <span class="nx">scope</span><span class="p">.</span>
 <span class="nx">observerInstance</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">();</span> <span class="c1">// unsubscribe to all events in all scopes</span>
+</pre></div>
+
+<h2>
+<a name="advanced-usage" class="anchor" href="#advanced-usage"><span class="octicon octicon-link"></span></a>Advanced Usage</h2>
+
+<h3>
+<a name="event-bubbling" class="anchor" href="#event-bubbling"><span class="octicon octicon-link"></span></a>Event bubbling</h3>
+
+<p>Observer events can bubble if needed, but only if it is enabled via a builder method. Bubbling can be stopped if any of the handlers return false similar to DOM events with jQuery.
+Important - events that bubble must be separated by a ':'</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">observerInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">withEventBubbling</span><span class="p">();</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'myEvent:myChildEvent'</span><span class="p">,</span> <span class="nx">handlerThatDoesNotReturnFalse</span><span class="p">);</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'myEvent:myChildEvent'</span><span class="p">,</span> <span class="s1">'myArg'</span><span class="p">);</span> <span class="c1">// both handlers will be called with 'myArg'</span>
+
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'myEvent:myChildEvent'</span><span class="p">,</span> <span class="nx">handlerThatDoesReturnFalse</span><span class="p">);</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">'myEvent:myChildEvent'</span><span class="p">,</span> <span class="s1">'myArg'</span><span class="p">);</span> <span class="c1">// only listeners to myChildEvent called.</span>
+</pre></div>
+
+<h3>
+<a name="checking-if-an-event-has-a-listener" class="anchor" href="#checking-if-an-event-has-a-listener"><span class="octicon octicon-link"></span></a>Checking if an event has a listener</h3>
+
+<p>This can be done quite easily via the <strong>hasListeners</strong> method. It optionally takes one eventName argument. If it is left out then the method will return if the observer has any listeners. The returned value is a Boolean.</p>
+
+<ul>
+<li>
+<strong>eventName</strong> - <em>optional</em> name of the event you wish to check for listeners.</li>
+</ul><div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">observerInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">hasListeners</span><span class="p">();</span> <span class="c1">// false.</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+<span class="nx">observerInstance</span><span class="p">.</span><span class="nx">hasListeners</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">);</span> <span class="c1">// true.</span>
 </pre></div>
 
 <h2>
