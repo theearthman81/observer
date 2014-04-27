@@ -15,7 +15,7 @@
     * @constructor
     */
    function Observer() {
-      if (!(this instanceof Observer)) {
+      if (!this || !(this instanceof Observer)) {
         return new Observer();
       }
    }
@@ -34,6 +34,7 @@
     * Whether events should events bubble up to parent.
     *
     * @method withEventBubbling
+    * @chainable
     * @return {*} 'this' for chaining
     */
    Observer.prototype.withEventBubbling = function() {
@@ -95,6 +96,7 @@
     * Public method to subscribe to a given eventName.
     *
     * @method subscribe
+    * @chainable
     * @param {String|Object} eventName - event to subscribe to, can be joined via ':'.
     * @param {Function} handler - function to invoke when event is published.
     * @param {Object} [scope] - scope for the handler to be run in. This is useful if you wish to unsubscribe by scope.
@@ -126,7 +128,8 @@
    /**
     * Public method to unsubscribe to a given eventName or scope or everything.
     *
-    * @method unsubscribe  
+    * @method unsubscribe 
+    * @chainable 
     * @param {String|Object} [eventName] - optional eventName to unsubscribe from.
     * @param {Object} [scope] - optional scope to unsubscribe from.
     * @return {Observer} 'this' for chaining.
@@ -158,6 +161,7 @@
     * the eventName can be joined via ':' and all events will be called unless a handler returns false then bubbling will be prevented.
     *
     * @method publish
+    * @chainable
     * @param {String|Object} eventName - eventName to publish.
     * @return {Observer} 'this' for chaining.
     */
@@ -202,6 +206,7 @@
     * Static method for using Observer as a mixin.
     *
     * @method mixin
+    * @static
     * @param {Object} base - base object to add mixin functionality to.
     * @return {Object}
     */
