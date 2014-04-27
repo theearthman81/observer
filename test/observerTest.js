@@ -26,6 +26,17 @@ describe('ObserverTest', function(){
        expect(secondSpy).toHaveBeenCalled();
    });
    
+   it('can be subscribed to with eventName that is derived from Object.toString', function(){
+       var spy = jasmine.createSpy();
+       var myEvent = {
+          toString: function() { return 'foo'; } 
+       };
+       
+       observer.subscribe(myEvent, spy);
+       observer.publish(myEvent);
+       expect(spy).toHaveBeenCalled();
+   });
+   
    it('can publish an event with arguments', function(){
        var spy = jasmine.createSpy();
        
@@ -74,6 +85,39 @@ describe('ObserverTest', function(){
        observer.unsubscribe('foo');
        expect(observer.hasListeners('foo')).toBeFalsy();
        expect(observer.hasListeners()).toBeFalsy();
+   });
+   
+   it('can correctly bubble events', function(){
+       var spy = jasmine.createSpy('spy');
+       var anotherSpy = jasmine.createSpy('anotherSpy');
+       observer.withEventBubbling();
+       
+       observer.subscribe('foo', spy);
+       observer.subscribe('foo:bar', anotherSpy);
+       
+       observer.publish('foo', 'myArg');
+       expect(spy).toHaveBeenCalledWith('myArg');
+       expect(anotherSpy.callCount).toBe(0);
+       
+       observer.publish('foo:bar', 'myArg2');
+       expect(spy).toHaveBeenCalledWith('myArg2');
+       expect(anotherSpy).toHaveBeenCalledWith('myArg2');
+   });
+   
+   it('can prevent bubbling when false is returned from child event', function(){
+       var spy = jasmine.createSpy('spy');
+       var anotherSpy = jasmine.createSpy('anotherSpy').andReturn(false);
+       observer.withEventBubbling();
+       
+       observer.subscribe('foo', spy);
+       observer.publish('foo', 'myArg');
+       expect(spy).toHaveBeenCalledWith('myArg');
+       spy.reset();
+       
+       observer.subscribe('foo:bar', anotherSpy);
+       observer.publish('foo:bar', 'myArg2');
+       expect(spy.callCount).toBe(0);
+       expect(anotherSpy).toHaveBeenCalledWith('myArg2');
    });
    
    it('can be used as a mixin', function(){
