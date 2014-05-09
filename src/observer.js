@@ -110,7 +110,7 @@
                         eventName.toString() : eventName; 
                         
       if (typeof handler !== 'function') {
-         throw new Error('Observer.subscribe: please provide a function as he handler argument.');
+         throw new Error('Observer.subscribe: please provide a function as the handler argument.');
       }
       var topics = this._getTopics();
    
