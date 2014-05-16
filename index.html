@@ -96,13 +96,13 @@
 <h3>
 <a name="unsubscribing-from-an-event" class="anchor" href="#unsubscribing-from-an-event"><span class="octicon octicon-link"></span></a>Unsubscribing from an event</h3>
 
-<p>Subscribe via the <strong>unsubscribe</strong> method which takes two optional arguments. If neither is supplied it will unsubscribe from all events.</p>
+<p>Unsubscribe via the <strong>unsubscribe</strong> method which takes two optional arguments. If neither is supplied it will unsubscribe from all events.</p>
 
 <ul>
 <li>
 <strong>eventName</strong> - <em>optional</em> name of the event you wish to unsubscribe from.</li>
 <li>
-<strong>scope</strong> - <em>optional</em> scope of you wish to unsubscribe from.</li>
+<strong>scope</strong> - <em>optional</em> the scope you wish to unsubscribe from.</li>
 </ul><div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">observerInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Observer</span><span class="p">();</span>
 <span class="nx">observerInstance</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">);</span> <span class="c1">// unsubscribe to myEvent for all scopes.</span>
 <span class="nx">observerInstance</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="s1">'myEvent'</span><span class="p">,</span> <span class="nb">window</span><span class="p">);</span> <span class="nx">unsubscribe</span> <span class="nx">to</span> <span class="nx">myEvent</span> <span class="k">for</span> <span class="nx">handlers</span> <span class="k">in</span> <span class="nx">the</span> <span class="nb">window</span> <span class="nx">scope</span><span class="p">.</span>
