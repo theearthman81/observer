@@ -186,6 +186,50 @@
    
       return this;
    };
+
+   /**
+    * @type {Array}
+    */
+   Observer.prototype._observing = null;
+
+   /**
+    * @method observe
+    * @chainable
+    * @param {Observer} other - another object that is an instance of observer that this object will observe.
+    * @param {String|Object} eventName - event to subscribe to, can be joined via ':'.
+    * @param {Function} handler - function to invoke when event is published.
+    * @return {Observer} 'this' for chaining.
+    */
+   Observer.prototype.observe = function(other, eventName, handler) {
+      if (other && typeof other.subscribe === 'function') {
+         if (this._observing === null) {
+            this._observing = [];
+         }
+         if (this._observing.filter(function(observed) { return observed === other; }).length === 0) {
+            this._observing.push(other);
+         }
+         other.subscribe(eventName, handler, this);
+      } else {
+         throw new Error('Observer.observe: please provide an object with a subscribe function as the "other" argument.');
+      }
+
+      return this;
+   };
+
+   /**
+    * @method stopObserving
+    * @chainable
+    * @return {Observer} 'this' for chaining.
+    */
+    Observer.prototype.stopObserving = function() {
+      if (Array.isArray(this._observing)) {
+         this._observing.forEach(function(other) {
+            other.unsubscribe(null, this);
+         }, this);
+      }
+
+      return this;
+    };
    
    /**
     * Utility to check whether a given event has any listeners; if none is supplied then all topics are checked.
