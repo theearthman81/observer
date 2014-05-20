@@ -6,10 +6,10 @@
    } else {
       root.Observer = cls();
    }
-}(this, function() {   
-	
+}(this, function() {
+
    "use strict";
-	
+
    /**
     * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
     *
@@ -31,7 +31,7 @@
     * @type {Boolean}
     */
    Observer.prototype._eventsShouldBubble = false;
-   
+
    /**
     * Whether events should events bubble up to parent.
     *
@@ -43,7 +43,7 @@
       this._eventsShouldBubble = true;
       return this;
    };
-   
+
    /**
     * Get all possible events that can bubble from a given eventName.
     * @param {String} eventName - eventName to split on ':' and return all possible events to bubble.
@@ -54,7 +54,7 @@
          return eventArr.slice(0, index + 1).join(':');
       });
    };
-   
+
    /**
     * Lazy getter for topics.
     * @return {Object}
@@ -65,7 +65,7 @@
       }
       return this._topics;
    };
-   
+
    /**
     * Private method to publish an event. 
     * @param {String} eventName - event to publish.
@@ -90,7 +90,7 @@
             }
          }
       }
-   
+
       return this._eventsShouldBubble;
    };
 
@@ -106,8 +106,8 @@
     * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.subscribe = function(eventName, handler, scope, once) {
-       eventName = (eventName && typeof eventName.toString === 'function') ? 
-                        eventName.toString() : eventName; 
+       eventName = (eventName && typeof eventName.toString === 'function') ?
+                        eventName.toString() : eventName;
                         
       if (typeof handler !== 'function') {
          throw new Error('Observer.subscribe: please provide a function as the handler argument.');
@@ -123,7 +123,7 @@
          scope: scope,
          once: !!once
       });
-   
+
       return this;
    };
 
@@ -136,9 +136,9 @@
     * @param {Object} [scope] - optional scope to unsubscribe from.
     * @return {Observer} 'this' for chaining.
     */
-   Observer.prototype.unsubscribe = function(eventName, scope) {  
-      eventName = (eventName && typeof eventName.toString === 'function') ? 
-                        eventName.toString() : eventName; 
+   Observer.prototype.unsubscribe = function(eventName, scope) {
+      eventName = (eventName && typeof eventName.toString === 'function') ?
+                        eventName.toString() : eventName;
       var topics = this._getTopics();
       [].concat(eventName || Object.keys(topics)).forEach(function(matchedEvent) {
          var topic = topics[matchedEvent];
@@ -148,13 +148,13 @@
                   return observer;
                }
             });
-         
+
             if (!this.hasListeners(matchedEvent)) {
                delete topics[matchedEvent];
             }
          }
       }, this);
-   
+
       return this;
    };
 
@@ -168,9 +168,9 @@
     * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.publish = function(eventName) {
-      eventName = (eventName && typeof eventName.toString === 'function') ? 
-                        eventName.toString() : eventName; 
-   
+      eventName = (eventName && typeof eventName.toString === 'function') ?
+                        eventName.toString() : eventName;
+
       var eventsToPublish = this._getBubbleEvents(eventName),
          args = Array.prototype.slice.call(arguments, 1),
          eventArgs;
@@ -183,7 +183,7 @@
          }
          eventsToPublish.pop();
       }
-   
+
       return this;
    };
 
@@ -230,7 +230,7 @@
 
       return this;
     };
-   
+
    /**
     * Utility to check whether a given event has any listeners; if none is supplied then all topics are checked.
     *
@@ -247,7 +247,7 @@
          return !!Object.keys(topics).length;
       }
    };
-   
+
    /**
     * Static method for using Observer as a mixin.
     *
@@ -265,9 +265,9 @@
          if (props.hasOwnProperty(prop)) {
             base[prop] = props[prop];
           }
-      }	  
+      }
       return base;
    };
-   
+
    return Observer;
 }));
