@@ -28,6 +28,11 @@
    Observer.prototype._topics = null;
 
    /**
+    * @type {Observer[]}
+    */
+   Observer.prototype._observing = null;
+
+   /**
     * @type {Boolean}
     */
    Observer.prototype._eventsShouldBubble = false;
@@ -186,11 +191,6 @@
 
       return this;
    };
-
-   /**
-    * @type {Array}
-    */
-   Observer.prototype._observing = null;
 
    /**
     * @method observe
