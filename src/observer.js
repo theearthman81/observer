@@ -205,7 +205,7 @@
          if (this._observing === null) {
             this._observing = [];
          }
-         if (this._observing.filter(function(observed) { return observed === other; }).length === 0) {
+         if (this._observing.indexOf(other) === -1) {
             this._observing.push(other);
          }
          other.subscribe(eventName, handler, this);
