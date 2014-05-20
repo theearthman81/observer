@@ -85,6 +85,43 @@ describe('ObserverTest', function(){
        observer.publish('foo');
        expect(spy).toHaveBeenCalled();
    });
+
+   it('can observe another object', function() {
+      var spy = jasmine.createSpy();
+
+      var another = new Observer();
+
+      observer.observe(another, 'foo', spy);
+      another.publish('foo');
+      expect(spy).toHaveBeenCalled();
+   });
+
+   it('can stop observing another object', function() {
+      var spy = jasmine.createSpy();
+
+      var another = new Observer();
+
+      observer.observe(another, 'foo', spy);
+      observer.stopObserving();
+      another.publish('foo');
+      expect(spy.callCount).toBe(0);
+   });
+
+   it('can stop observing multiple objects', function() {
+      var spy = jasmine.createSpy();
+      var secondSpy = jasmine.createSpy();
+
+      var another = new Observer();
+      var yetAnother = new Observer();
+
+      observer.observe(another, 'foo', spy);
+      observer.observe(yetAnother, 'foo', secondSpy);
+      observer.stopObserving();
+      another.publish('foo');
+      yetAnother.publish('foo');
+      expect(spy.callCount).toBe(0);
+      expect(secondSpy.callCount).toBe(0);
+   });
    
    it('correctly returns if it has listeners', function(){
        var spy = jasmine.createSpy();
