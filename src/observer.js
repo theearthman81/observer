@@ -201,7 +201,7 @@
     * @return {Observer} 'this' for chaining.
     */
    Observer.prototype.observe = function(other, eventName, handler) {
-      if (other && typeof other.subscribe === 'function') {
+      if (other instanceof Observer) {
          if (this._observing === null) {
             this._observing = [];
          }
@@ -210,7 +210,7 @@
          }
          other.subscribe(eventName, handler, this);
       } else {
-         throw new Error('Observer.observe: please provide an object with a subscribe function as the "other" argument.');
+         throw new Error('Observer.observe: please provide an instance of Observer as the "other" argument.');
       }
 
       return this;
