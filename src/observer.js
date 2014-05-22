@@ -11,31 +11,33 @@
    "use strict";
 
    /**
-    * Pub/Sub library that allows 'subscribe', 'publish' and 'unsubscribe' methods. 
+    * Pub/Sub library that allows 'subscribe/on', 'publish/fire' and 'unsubscribe/un' methods. 
     *
     * @class Observer
     * @constructor
     */
    function Observer() {
-      if (!this || !(this instanceof Observer)) {
+      if (!Observer.isObserver(this)) {
         return new Observer();
       }
    }
-
+   
+   var prototype = Observer.prototype;
+   
    /**
     * @type {Object}
     */
-   Observer.prototype._topics = null;
+   prototype._topics = null;
 
    /**
     * @type {Observer[]}
     */
-   Observer.prototype._observing = null;
+   prototype._observing = null;
 
    /**
     * @type {Boolean}
     */
-   Observer.prototype._eventsShouldBubble = false;
+   prototype._eventsShouldBubble = false;
 
    /**
     * Whether events should events bubble up to parent.
@@ -44,17 +46,18 @@
     * @chainable
     * @return {*} 'this' for chaining
     */
-   Observer.prototype.withEventBubbling = function() {
+   prototype.withEventBubbling = function() {
       this._eventsShouldBubble = true;
       return this;
    };
 
    /**
     * Get all possible events that can bubble from a given eventName.
+    *
     * @param {String} eventName - eventName to split on ':' and return all possible events to bubble.
     * @return {String[]}
     */
-   Observer.prototype._getBubbleEvents = function(eventName) {
+   prototype._getBubbleEvents = function(eventName) {
       return eventName.split(':').map(function(splitName, index, eventArr) {
          return eventArr.slice(0, index + 1).join(':');
       });
@@ -64,7 +67,7 @@
     * Lazy getter for topics.
     * @return {Object}
     */
-   Observer.prototype._getTopics = function() {
+   prototype._getTopics = function() {
       if (!this._topics) {
          this._topics = Object.create(null);
       }
@@ -73,11 +76,12 @@
 
    /**
     * Private method to publish an event. 
+    *
     * @param {String} eventName - event to publish.
     * @param {Boolean} [bubble] - whether event should bubble or not. True by default.
     * @return {Boolean} - false if a handler has returned false, this will prevent the vent 'bubbling'.
     */
-   Observer.prototype._publish = function(eventName, bubble) {
+   prototype._publish = function(eventName, bubble) {
       var observers = this._getTopics()[eventName],
          args = Array.prototype.slice.call(arguments, 1),
          returnedValue,
@@ -101,6 +105,7 @@
 
    /**
     * Public method to subscribe to a given eventName.
+    * Also aliased as 'on'.
     *
     * @method subscribe
     * @chainable
@@ -110,7 +115,7 @@
     * @param {Boolean} [once] - whether handler should only be triggered once and then unsubscribe.
     * @return {Observer} 'this' for chaining.
     */
-   Observer.prototype.subscribe = function(eventName, handler, scope, once) {
+   prototype.subscribe = function(eventName, handler, scope, once) {
        eventName = (eventName && typeof eventName.toString === 'function') ?
                         eventName.toString() : eventName;
                         
@@ -131,17 +136,19 @@
 
       return this;
    };
+   prototype.on = prototype.subscribe;
 
    /**
     * Public method to unsubscribe to a given eventName or scope or everything.
-    *
+    * Also aliased as 'un'.
+    
     * @method unsubscribe 
     * @chainable 
     * @param {String|Object} [eventName] - optional eventName to unsubscribe from.
     * @param {Object} [scope] - optional scope to unsubscribe from.
     * @return {Observer} 'this' for chaining.
     */
-   Observer.prototype.unsubscribe = function(eventName, scope) {
+   prototype.unsubscribe = function(eventName, scope) {
       eventName = (eventName && typeof eventName.toString === 'function') ?
                         eventName.toString() : eventName;
       var topics = this._getTopics();
@@ -162,17 +169,19 @@
 
       return this;
    };
+   prototype.un = prototype.unsubscribe;
 
    /**
     * Public method to publish to a given eventName. Any arguments supplied will be proxied to the handler.
     * the eventName can be joined via ':' and all events will be called unless a handler returns false then bubbling will be prevented.
+    * Also aliased as 'fire'.
     *
     * @method publish
     * @chainable
     * @param {String|Object} eventName - eventName to publish.
     * @return {Observer} 'this' for chaining.
     */
-   Observer.prototype.publish = function(eventName) {
+   prototype.publish = function(eventName) {
       eventName = (eventName && typeof eventName.toString === 'function') ?
                         eventName.toString() : eventName;
 
@@ -191,37 +200,42 @@
 
       return this;
    };
+   prototype.fire = prototype.publish;
 
    /**
-    * @method observe
+    * The supplied observer will be subscribed to and stored for easy unsubscribing via the stopListening method.
+    * 
+    * @method listenTo
     * @chainable
-    * @param {Observer} other - another object that is an instance of observer that this object will observe.
+    * @param {Observer} observer - observer instance that to listen to.
     * @param {String|Object} eventName - event to subscribe to, can be joined via ':'.
     * @param {Function} handler - function to invoke when event is published.
     * @return {Observer} 'this' for chaining.
     */
-   Observer.prototype.observe = function(other, eventName, handler) {
-      if (other instanceof Observer) {
+   prototype.listenTo = function(observer, eventName, handler) {
+      if (Observer.isObserver(observer)) {
          if (this._observing === null) {
             this._observing = [];
          }
-         if (this._observing.indexOf(other) === -1) {
-            this._observing.push(other);
+         if (this._observing.indexOf(observer) < 0) {
+            this._observing.push(observer);
          }
-         other.subscribe(eventName, handler, this);
+         observer.subscribe(eventName, handler, this);
       } else {
-         throw new Error('Observer.observe: please provide an instance of Observer as the "other" argument.');
+         throw new Error('Observer.listenTo: please provide an instance of Observer as the "observer" argument.');
       }
 
       return this;
    };
 
    /**
-    * @method stopObserving
+    * Stop listening to all observers that have been subscribed to via the listenTo method.
+    *
+    * @method stopListening
     * @chainable
     * @return {Observer} 'this' for chaining.
     */
-    Observer.prototype.stopObserving = function() {
+    prototype.stopListening = function() {
       if (Array.isArray(this._observing)) {
          this._observing.forEach(function(other) {
             other.unsubscribe(null, this);
@@ -238,7 +252,7 @@
     * @param {String|Object} [eventName] - optional eventName to check.
     * @return {Boolean}
     */
-   Observer.prototype.hasListeners = function(eventName) {
+   prototype.hasListeners = function(eventName) {
       var topics = this._getTopics();
       if (eventName) {
          eventName = typeof eventName.toString === 'function' ? eventName.toString() : eventName;
@@ -260,13 +274,24 @@
       if (!base) {
          throw new Error('Observer.mixin: please provide a base object to extend.');
       }
-      var props = Observer.prototype;
-      for (var prop in props) {
-         if (props.hasOwnProperty(prop)) {
-            base[prop] = props[prop];
+      for (var prop in prototype) {
+         if (prototype.hasOwnProperty(prop)) {
+            base[prop] = prototype[prop];
           }
       }
       return base;
+   };
+   
+   /**
+    * Static method for checking whether given argument is an instance of Observer.
+    *
+    * @method isObserver
+    * @static
+    * @param {Object} check - object to check.
+    * @return {Boolean}
+    */
+   Observer.isObserver = function(check) {
+      return check && check instanceof Observer;
    };
 
    return Observer;

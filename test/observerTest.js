@@ -91,7 +91,7 @@ describe('ObserverTest', function(){
 
       var another = new Observer();
 
-      observer.observe(another, 'foo', spy);
+      observer.listenTo(another, 'foo', spy);
       another.publish('foo');
       expect(spy).toHaveBeenCalled();
    });
@@ -101,8 +101,8 @@ describe('ObserverTest', function(){
 
       var another = new Observer();
 
-      observer.observe(another, 'foo', spy);
-      observer.stopObserving();
+      observer.listenTo(another, 'foo', spy);
+      observer.stopListening();
       another.publish('foo');
       expect(spy.callCount).toBe(0);
    });
@@ -114,9 +114,9 @@ describe('ObserverTest', function(){
       var another = new Observer();
       var yetAnother = new Observer();
 
-      observer.observe(another, 'foo', spy);
-      observer.observe(yetAnother, 'foo', secondSpy);
-      observer.stopObserving();
+      observer.listenTo(another, 'foo', spy);
+      observer.listenTo(yetAnother, 'foo', secondSpy);
+      observer.stopListening();
       another.publish('foo');
       yetAnother.publish('foo');
       expect(spy.callCount).toBe(0);
@@ -177,5 +177,15 @@ describe('ObserverTest', function(){
        myObserver.subscribe('foo', spy);
        myObserver.publish('foo');
        expect(spy).toHaveBeenCalled();
+   });
+   
+   it('can check whether a supplied object is a Observer instance or not', function(){
+      [undefined, null, 0, true, {}, 'test', window, Observer].forEach(function(value) {
+          expect(Observer.isObserver(value)).toBeFalsy();
+      });
+      
+      [Observer(), new Observer()].forEach(function(value) {
+          expect(Observer.isObserver(value)).toBeTruthy();
+      });
    });
 });
