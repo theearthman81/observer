@@ -52,18 +52,6 @@
    };
 
    /**
-    * Get all possible events that can bubble from a given eventName.
-    *
-    * @param {String} eventName - eventName to split on ':' and return all possible events to bubble.
-    * @return {String[]}
-    */
-   prototype._getBubbleEvents = function(eventName) {
-      return eventName.split(':').map(function(splitName, index, eventArr) {
-         return eventArr.slice(0, index + 1).join(':');
-      });
-   };
-
-   /**
     * Lazy getter for topics.
     * @return {Object}
     */
@@ -185,7 +173,7 @@
       eventName = (eventName && typeof eventName.toString === 'function') ?
                         eventName.toString() : eventName;
 
-      var eventsToPublish = this._getBubbleEvents(eventName),
+      var eventsToPublish = Observer._getBubbleEvents(eventName),
          args = Array.prototype.slice.call(arguments, 1),
          eventArgs;
       
@@ -260,6 +248,18 @@
       } else {
          return !!Object.keys(topics).length;
       }
+   };
+   
+   /**
+    * Static method to get all possible events that can bubble from a given eventName.
+    *
+    * @param {String} eventName - eventName to split on ':' and return all possible events to bubble.
+    * @return {String[]}
+    */
+   Observer._getBubbleEvents = function(eventName) {
+      return eventName.split(':').map(function(splitName, index, eventArr) {
+         return eventArr.slice(0, index + 1).join(':');
+      });
    };
 
    /**
