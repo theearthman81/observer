@@ -10,6 +10,9 @@
 
    "use strict";
 
+   // internal channels object.
+   var channels = {};
+   
    /**
     * Pub/Sub library that allows 'subscribe/on', 'publish/fire' and 'unsubscribe/un' methods. 
     *
@@ -280,6 +283,18 @@
           }
       }
       return base;
+   };
+   
+   /**
+    * Static method for creating/retrieving a channel.
+    *
+    * @method channel
+    * @static
+    * @param {String} channel - channel to create/retrieve.
+    * @return {Observer}
+    */
+   Observer.channel = function(channel) {
+      return channels[channel] = channels[channel] || new Observer();
    };
    
    /**
